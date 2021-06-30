@@ -31,11 +31,6 @@ void frame_buffer_write(int index, char character,
     char foreground_color, char back_ground_color);
 
 
-/** fb_move_cursor:
- *  Moves the cursor of the framebuffer to the given position
- *
- *  @param pos The new position of the cursor
- */
-void fb_move_cursor(unsigned short pos);
+void frame_buffer_move_cursor(unsigned short pos);
 
 #endif // FRAME_BUFFER_H_

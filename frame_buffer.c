@@ -9,6 +9,11 @@ void frame_buffer_write(int index, char character, char fg, char bg)
     frame_buffer_ptr[(index << 1) | 1] = ((bg & 0xF) << 4) | (fg & 0xF);
 }
 
+/** fb_move_cursor:
+ *  Moves the cursor of the framebuffer to the given position
+ *
+ *  @param pos The new position of the cursor
+ */
 void frame_buffer_move_cursor(unsigned short pos)
 {
     outb(FRAME_BUFFER_COMMAND_PORT, FRAME_BUFFER_HIGH_BYTE_COMMAND);
