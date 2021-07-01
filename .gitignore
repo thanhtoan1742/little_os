@@ -3,4 +3,5 @@
 *.elf
 *.iso
 /stage2_eltorito
+/compile_flags.txt
 bochslog.txt
