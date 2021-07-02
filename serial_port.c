@@ -32,10 +32,10 @@ int serial_received(uint port)
     return inb(port + 5) & 1;
 }
 
-char serial_read(uint port)
+char serial_get(uint port)
 {
-  while (serial_received(port) == 0) ;
-  return inb(port);
+    while (serial_received(port) == 0) ;
+    return inb(port);
 }
 
 int serial_transmit_empty(uint port)
@@ -43,8 +43,15 @@ int serial_transmit_empty(uint port)
    return inb(port + 5) & 0x20;
 }
  
-void serial_write(uint port, char data) 
+void serial_put(uint port, char data) 
 {
     while (serial_transmit_empty(port) == 0);
     outb(port, data);
+}
+
+void serial_write(uint port, const char* data, uint length) 
+{
+    uint i = 0;
+    for (; i < length && data[i]; ++i)
+        serial_put(port, data[i]);
 }

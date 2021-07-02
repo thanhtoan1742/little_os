@@ -1,19 +1,19 @@
 #include "frame_buffer.h"
 #include "io.h"
 
-void frame_buffer_write(uint index, char character, char fg, char bg) 
+void frame_buffer_put(uint index, char character, char fg, char bg) 
 {
     char *frame_buffer_ptr = (char *) 0x000B8000;
     frame_buffer_ptr[index << 1] = character;
     frame_buffer_ptr[(index << 1) | 1] = ((bg & 0xF) << 4) | (fg & 0xF);
 }
 
-void frame_buffer_write_str(const char *buffer, uint length) 
+void frame_buffer_write(const char *buffer, uint length) 
 {
     uint cursor_pos = frame_buffer_get_cursor_position();
     uint i = 0;
     for (; i < length && buffer[i]; ++i) {
-        frame_buffer_write(cursor_pos + i, buffer[i], 
+        frame_buffer_put(cursor_pos + i, buffer[i], 
             FRAME_BUFFER_COLOR_LIGHT_GREEN, FRAME_BUFFER_COLOR_BLACK);
     }
     frame_buffer_move_cursor(cursor_pos + i);

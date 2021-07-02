@@ -26,8 +26,9 @@
 
 int serial_init(uint port);
 int serial_received(uint port);
-char serial_read(uint port);
+char serial_get(uint port);
 int serial_transmit_empty(uint port);
-void serial_write(uint port, char data);
+void serial_put(uint port, char data);
+void serial_write(uint port, const char* data, uint length);
 
 #endif // SERIAL_PORT_H_

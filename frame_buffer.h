@@ -29,10 +29,10 @@
 #define FRAME_BUFFER_HIGH_BYTE_COMMAND      14
 #define FRAME_BUFFER_LOW_BYTE_COMMAND       15
 
-void frame_buffer_write(uint index, char character,
+void frame_buffer_put(uint index, char character,
     char foreground_color, char back_ground_color);
 
-void frame_buffer_write_str(const char* buffer, uint length);
+void frame_buffer_write(const char* buffer, uint length);
 
 void frame_buffer_move_cursor(uint pos);
 
