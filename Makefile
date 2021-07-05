@@ -1,8 +1,7 @@
 all: bootloader
 
 run: bootloader
-	# qemu-system-x86_64 -drive format=raw,file=bin/bootloader.bin
-	qemu-system-x86_64 bin/bootloader.bin
+	qemu-system-x86_64 -drive format=raw,file=bin/bootloader.bin
 
 bootloader:
 	$(MAKE) --directory=bootloader all

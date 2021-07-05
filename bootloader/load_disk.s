@@ -7,7 +7,7 @@ load_disk:
     ; mov dl, 0x80    ; first hard drive (this drive)
     mov dh, 0x00    ; head 0
     mov ch, 0x00    ; cylinder 0
-    mov cl, 1       ; 2nd sector
+    mov cl, 2       ; 2nd sector
 
     ; read to ES:BX
     mov bx, [disk_address]
