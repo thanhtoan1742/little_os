@@ -1,7 +1,7 @@
 #include "frame_buffer.h"
 #include "io.h"
 
-void frame_buffer_put(uint index, char character, char fg, char bg) 
+void frame_buffer_put(uint index, char character, char fg, char bg)
 {
     char *frame_buffer_ptr = (char *) 0x000B8000;
     frame_buffer_ptr[index << 1] = character;
