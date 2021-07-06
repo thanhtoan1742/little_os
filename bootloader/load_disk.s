@@ -1,3 +1,10 @@
+%ifndef LOAD_DISK_S
+%define LOAD_DISK_S
+
+%include "rm_screen.s"
+
+[bits 16]
+
 load_disk:
     pusha
 
@@ -22,11 +29,11 @@ disk_error:
     push ax
 
     mov ax, disk_error_message
-    call print
+    call rm_print
 
     mov ah, 0x01
     int 0x13
-    call print_number
+    call rm_print_hex
 
     mov ah, 0x10
     mov al, 10
@@ -40,3 +47,5 @@ disk_error_message:
 
 disk_address:
     dw 0x9000
+
+%endif ; LOAD_DISK_S

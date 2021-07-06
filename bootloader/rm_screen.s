@@ -1,22 +1,29 @@
-print:
+; 16-bit real mode screen io
+; prefix rm = real mode
+%ifndef RM_SREEN_S
+%define RM_SREEN_S
+
+[bits 16]
+
+rm_print:
     push si
     push ax
 
     mov si, ax
     mov ah, 0x0E
-    print_loop:
+    rm_print_loop:
         lodsb
         test al, al
-        jz end_print_loop
+        jz rm_end_print_loop
         int 0x10
-        jmp print_loop
-    end_print_loop:
+        jmp rm_print_loop
+    rm_end_print_loop:
 
     pop ax
     pop si
     ret
 
-print_number:
+rm_print_hex:
     push bx
     mov bx, ax
 
@@ -64,7 +71,7 @@ hex_char:
     end_hex_char:
     ret
 
-screen_init:
+rm_screen_init:
     pusha
     ; Set background and foreground colour
     mov ah, 0x06    ; Clear / scroll screen up function
@@ -72,7 +79,7 @@ screen_init:
                     ; (0x00 = clear entire window)
     xor cx, cx
     mov dx, 0x184F
-    mov bh, 0x0B
+    mov bh, 0x0B    ; light blue (B) on black (0)
     int 0x10
 
     ; move cursor to 0th row, 0th column, 0th page
@@ -83,3 +90,5 @@ screen_init:
 
     popa
     ret
+
+%endif ; RM_SREEN_S

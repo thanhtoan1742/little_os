@@ -3,7 +3,7 @@ src := *.s
 all: bootloader.bin
 
 bootloader.bin: $(src)
-	nasm -f bin bootloader.s -o $@
+	nasm -f bin bootsector.s -o $@
 
 .PHONY: clean
 clean:
