@@ -2,6 +2,8 @@
 [bits 16]
 ; BIOS loaded dl with the drive number
 
+RM_STACK_BASE equ 0x8000
+
 cli
 
 ; init segment register
@@ -13,7 +15,7 @@ mov gs, ax
 mov ss, ax
 
 ; define stack
-mov bp, [rm_stack_base]
+mov bp, RM_STACK_BASE
 mov sp, bp
 
 sti
@@ -28,10 +30,10 @@ jmp $
 call switch_to_pm
 
 [bits 32]
-PM_BEGIN:
+pm_begin:
 
-; mov eax, pm_load_message
-; call pm_print
+mov eax, pm_load_message
+call pm_print
 jmp $
 
 [bits 16]
@@ -39,8 +41,6 @@ jmp $
 
 
 
-rm_stack_base:
-    dw 0x8000
 
 bootsector_load_message:
     db "boot sector loaded", 10, 13, 0
@@ -52,7 +52,7 @@ pm_load_message:
 ; %include "load_disk.s"
 %include "a20.s"
 %include "switch_to_protected_mode.s"
-; %include "pm_screen.s"
+%include "pm_screen.s"
 
 times 0x1FE - ($ - $$) db 0
 dw 0xAA55

@@ -3,6 +3,8 @@
 
 %include "gdt.s"
 
+PM_STACK_BASE equ 0x90000
+
 [bits 16]
 switch_to_pm:
 cli                     ; disable all interupt
@@ -28,15 +30,11 @@ mov es, ax
 mov fs, ax
 mov gs, ax
 
-mov ebp, [pm_stack_base]
+mov ebp, PM_STACK_BASE
 mov esp, ebp
 
-sti
-
 ; jump back to begin protected mode
-call PM_BEGIN
+call pm_begin
 
-pm_stack_base:
-    dd 0x90000
 
 %endif ; SWITCH_TO_PROTECTED_MODE_S

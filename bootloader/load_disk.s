@@ -4,6 +4,10 @@
 %include "rm_screen.s"
 
 [bits 16]
+DISK_ADDRESS equ 0x9000
+disk_error_message:
+    db "disk error", 10, 13, 0
+
 
 load_disk:
     pusha
@@ -41,11 +45,5 @@ disk_error:
 
     pop ax
     ret
-
-disk_error_message:
-    db "disk error", 10, 13, 0
-
-disk_address:
-    dw 0x9000
 
 %endif ; LOAD_DISK_S

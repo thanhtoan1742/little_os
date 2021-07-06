@@ -2,7 +2,6 @@
 %define A20_S
 
 [bits 16]
-
 ; Function: check_a20
 ;
 ; Purpose: to check the status of the a20 line in a completely
@@ -14,7 +13,6 @@
 ; Returns: 0 in ax if the a20 line is disabled (memory wraps
 ; around) 1 in ax if the a20 line is enabled (memory does not wrap
 ; around)
-
 check_a20:
     pushf
     push ds
