@@ -55,7 +55,7 @@ check_a20:
 
     mov ax, 1
 
-check_a20_exit:
+    check_a20_exit:
     pop si
     pop di
     pop es
@@ -64,54 +64,71 @@ check_a20_exit:
 
     ret
 
+enable_a20:
+    push ax
+    call check_a20
+    cmp ax, 0
+    jne enable_a20_exit
+
+    call enable_a20_keyboard
+
+    enable_a20_exit:
+    pop ax
+    ret
 
 ; copied from the internet
-; The code might contain bugs.
-; TODO: check to code.
-[bits 32]
-enable_a20:
+enable_a20_keyboard:
     cli
 
-    call    a20wait
-    mov     al, 0xAD
-    out     0x64, al
+    ; send command: disable keyboard
+    call a20_wait_command
+    mov al, 0xAD
+    out 0x64, al
 
-    call    a20wait
-    mov     al, 0xD0
-    out     0x64, al
+    ; send command: read from input
+    call a20_wait_command
+    mov al, 0xD0
+    out 0x64, al
 
-    call    a20wait2
-    in      al, 0x60
-    push    eax
+    ; read input from keyboard and save to eax
+    call a20_wait_data
+    in al, 0x60
+    push eax
 
-    call    a20wait
-    mov     al, 0xD1
-    out     0x64, al
+    ; send command: write to output
+    call a20_wait_command
+    mov al, 0xD1
+    out 0x64, al
 
-    call    a20wait
-    pop     eax
-    or      al, 2
-    out     0x60, al
+    ; write input back, with bit no.2 set
+    call a20_wait_command
+    pop eax
+    or al, 2
+    out 0x60, al
 
-    call    a20wait
-    mov     al, 0xAE
-    out     0x64, al
+    ; send command: enable keyboard
+    call a20_wait_command
+    mov al, 0xAE
+    out 0x64, al
 
-    call    a20wait
+    call a20_wait_command
+
     sti
     ret
 
-a20wait:
-    in      al, 0x64
-    test    al, 2
-    jnz     a20wait
+; wait until keyboard ready for command
+a20_wait_command:
+    in al, 0x64
+    test al, 2
+    jnz a20_wait_command
     ret
 
 
-a20wait2:
-    in      al, 0x64
-    test    al, 1
-    jz      a20wait2
+; wait until keyboard ready for data
+a20_wait_data:
+    in al, 0x64
+    test al, 1
+    jz a20_wait_data
     ret
 
 %endif ; A20_S
