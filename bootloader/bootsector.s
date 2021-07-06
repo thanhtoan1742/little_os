@@ -1,34 +1,58 @@
-[bits 16]
 [org 0x7C00]
-; BIOS loaded dx with the disk number
+[bits 16]
+; BIOS loaded dl with the drive number
 
-call rm_init
+cli
+
+; init segment register
+mov ax, cs
+mov ds, ax
+mov es, ax
+mov fs, ax
+mov gs, ax
+mov ss, ax
+
+; define stack
+mov bp, [rm_stack_base]
+mov sp, bp
+
+sti
+
 call rm_screen_init
-
 mov ax, bootsector_load_message
 call rm_print
 
 call enable_a20
-
-; jmp $
+jmp $
 
 call switch_to_pm
 
 [bits 32]
-BEGIN_PM:
+PM_BEGIN:
+
+; mov eax, pm_load_message
+; call pm_print
 jmp $
 
+[bits 16]
 
 
+
+
+rm_stack_base:
+    dw 0x8000
 
 bootsector_load_message:
     db "boot sector loaded", 10, 13, 0
 
-%include "rm_init.s"
+pm_load_message:
+    db "switched to protected mode", 10, 13, 0
+
 %include "rm_screen.s"
-%include "load_disk.s"
+; %include "load_disk.s"
 %include "a20.s"
 %include "switch_to_protected_mode.s"
+; %include "pm_screen.s"
 
 times 0x1FE - ($ - $$) db 0
 dw 0xAA55

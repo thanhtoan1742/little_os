@@ -4,7 +4,6 @@
 %include "gdt.s"
 
 [bits 16]
-
 switch_to_pm:
 cli                     ; disable all interupt
 lgdt [gdt_descriptor]   ; load gdt
@@ -16,12 +15,12 @@ or eax, 0x1
 mov cr0, eax
 
 ; flush prefetched queue
-jmp CODE_SEG:init_pm
+jmp CODE_SEG:pm_init
 nop
 nop
 
 [bits 32]
-init_pm:
+pm_init:
 mov ax, DATA_SEG
 mov dx, ax
 mov ss, ax
@@ -35,7 +34,7 @@ mov esp, ebp
 sti
 
 ; jump back to begin protected mode
-call BEGIN_PM
+call PM_BEGIN
 
 pm_stack_base:
     dd 0x90000

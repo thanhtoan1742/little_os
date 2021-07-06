@@ -4,7 +4,6 @@
 %define RM_SREEN_S
 
 [bits 16]
-
 rm_print:
     push si
     push ax
