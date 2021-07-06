@@ -19,8 +19,8 @@ gdt_code:
 dd 0xffff       ; Limit (bits  0-15)
 dw 0x0          ; Base (bits  0-15)
 db 0x0          ; Base (bits  16 -23)
-db 10011010b    ; 1st flags , type  flags
-db 11001111b    ; 2nd flags , Limit (bits  16-19)
+db 0b10011010    ; 1st flags , type  flags
+db 0b11001111    ; 2nd flags , Limit (bits  16-19)
 db 0x0          ; Base (bits  24 -31)
 
 
@@ -32,8 +32,8 @@ gdt_data:
 dw 0xffff       ; Limit (bits  0-15)
 dw 0x0          ; Base (bits  0-15)
 db 0x0          ; Base (bits  16 -23)
-db 10010010b    ; 1st flags , type  flags
-db 11001111b    ; 2nd flags , Limit (bits  16-19)
+db 0b10010010    ; 1st flags , type  flags
+db 0b11001111    ; 2nd flags , Limit (bits  16-19)
 db 0x0          ; Base (bits  24 -31)
 
 ; The reason for putting a label at the  end of the GDT is so we can have the
@@ -53,7 +53,7 @@ dd gdt_start                ; Start address of our GDT
 ; we set DS = 0x10 in PM, the CPU knows that we mean it to use the segment
 ; described at offset 0x10 (i.e. 16 bytes) in our GDT, which in our case is the
 ; DATA segment (0x0 -> NULL; 0x08 -> CODE; 0x10 -> DATA)
-CODE_SEG  equ  gdt_code  - gdt_start
-DATA_SEG  equ  gdt_data  - gdt_start
+CODE_SEG equ gdt_code - gdt_start
+DATA_SEG equ gdt_data - gdt_start
 
 %endif ; GDT_S

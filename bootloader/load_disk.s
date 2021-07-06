@@ -5,7 +5,7 @@
 
 [bits 16]
 DISK_ADDRESS equ 0x9000
-disk_error_message:
+DISK_ERROR_MESSAGE:
     db "disk error", 10, 13, 0
 
 
@@ -21,7 +21,7 @@ load_disk:
     mov cl, 2       ; 2nd sector
 
     ; read to ES:BX
-    mov bx, [disk_address]
+    mov bx, DISK_ADDRESS
     int 0x13
 
     jc disk_error
@@ -32,7 +32,7 @@ load_disk:
 disk_error:
     push ax
 
-    mov ax, disk_error_message
+    mov ax, DISK_ERROR_MESSAGE
     call rm_print
 
     mov ah, 0x01
