@@ -8,6 +8,7 @@ int kmain()
     frame_buffer_put(1, 'A', FRAME_BUFFER_COLOR_LIGHT_BLUE, FRAME_BUFFER_COLOR_BLACK);
     frame_buffer_put(2, 'F', FRAME_BUFFER_COLOR_LIGHT_GREEN, FRAME_BUFFER_COLOR_BLACK);
     frame_buffer_put(3, 'E', FRAME_BUFFER_COLOR_LIGHT_BROWN, FRAME_BUFFER_COLOR_BLACK);
+    return 0xCAFE;
     
     frame_buffer_move_cursor(0x20);
     char message[] = "i like coffee";

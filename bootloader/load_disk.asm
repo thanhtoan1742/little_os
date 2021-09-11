@@ -1,10 +1,12 @@
 %ifndef LOAD_DISK_S
 %define LOAD_DISK_S
 
-%include "rm_screen.s"
+%include "rm_screen.asm"
 
 [bits 16]
 DISK_ADDRESS equ 0x9000
+N_SECTOR_TO_READ equ 100
+
 DISK_ERROR_MESSAGE:
     db "disk error", 10, 13, 0
 
@@ -13,7 +15,7 @@ load_disk:
     pusha
 
     mov ah, 0x02
-    mov al, 1       ; read 1 sector
+    mov al, N_SECTOR_TO_READ
     ; dl is automaticly setted up
     ; mov dl, 0x80    ; first hard drive (this drive)
     mov dh, 0x00    ; head 0

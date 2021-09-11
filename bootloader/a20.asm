@@ -60,6 +60,7 @@ check_a20:
     pop ds
     popf
 
+    sti
     ret
 
 enable_a20:

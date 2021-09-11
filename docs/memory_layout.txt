@@ -1,0 +1,57 @@
+0x0 - 0x8000: 	BIOS, bootloader and stack
+0x9000:			disk start (second sector)
+0x100000:		kernel
+
+real mode memory layout:
+0x00000000 - 0x000003FF - Real Mode Interrupt Vector Table
+0x00000400 - 0x000004FF - BIOS Data Area
+0x00000500 - 0x00007BFF - Unused
+0x00007C00 - 0x00007DFF - Our Bootloader
+0x00007E00 - 0x0009FFFF - Unused
+0x000A0000 - 0x000BFFFF - Video RAM (VRAM) Memory
+0x000B0000 - 0x000B7777 - Monochrome Video Memory
+0x000B8000 - 0x000BFFFF - Color Video Memory
+0x000C0000 - 0x000C7FFF - Video ROM BIOS
+0x000C8000 - 0x000EFFFF - BIOS Shadow Area
+0x000F0000 - 0x000FFFFF - System BIOS
+
+
+         | Protected-mode kernel  |
+100000   +------------------------+
+         | I/O memory hole        |
+0A0000   +------------------------+
+         | Reserved for BIOS      | Leave as much as possible unused
+         ~                        ~
+         | Command line           | (Can also be below the X+10000 mark)
+X+10000  +------------------------+
+         | Stack/heap             | For use by the kernel real-mode code.
+X+08000  +------------------------+
+         | Kernel setup           | The kernel real-mode code.
+         | Kernel boot sector     | The kernel legacy boot sector.
+       X +------------------------+
+         | Boot loader            | <- Boot sector entry point 0x7C00
+001000   +------------------------+
+         | Reserved for MBR/BIOS  |
+000800   +------------------------+
+         | Typically used by MBR  |
+000600   +------------------------+
+         | BIOS use only          |
+000000   +------------------------+
+
+
+
+Segment descriptor
+
+ 63         56         51   48    45           39        32 
+------------------------------------------------------------
+|             | |B| |A|       | |   | |0|E|W|A|            |
+| BASE 31:24  |G|/|L|V| LIMIT |P|DPL|S|  TYPE | BASE 23:16 |
+|             | |D| |L| 19:16 | |   | |1|C|R|A|            |
+------------------------------------------------------------
+
+ 31                         16 15                         0 
+------------------------------------------------------------
+|                             |                            |
+|        BASE 15:0            |       LIMIT 15:0           |
+|                             |                            |
+------------------------------------------------------------
